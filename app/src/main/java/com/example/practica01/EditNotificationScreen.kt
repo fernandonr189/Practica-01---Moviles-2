@@ -20,6 +20,8 @@ class EditNotificationScreen : AppCompatActivity() {
     private lateinit var selectHourButton : Button
     private lateinit var saveAlarmButton: Button
 
+    private var alarmIndex : Int? = null
+
     private lateinit var hourText : TextView
     private var hourStr : String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,11 +31,17 @@ class EditNotificationScreen : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
+        alarmIndex = intent.getIntExtra("AlarmIndex", -1)
+
         titleTextField = findViewById(R.id.alarm_title_textfield)
         descriptionTextField = findViewById(R.id.alarm_description_textfield)
         selectHourButton = findViewById(R.id.select_hour_button)
         saveAlarmButton = findViewById(R.id.save_alarm_button)
         hourText = findViewById(R.id.hour_label)
+
+        if(alarmIndex != -1) {
+            fillForm()
+        }
 
         saveAlarmButton.setOnClickListener {
             if(validateForm()) {
@@ -50,9 +58,23 @@ class EditNotificationScreen : AppCompatActivity() {
         }
     }
 
+    private fun fillForm() {
+        titleTextField.setText(State.alarms[alarmIndex!!].title)
+        descriptionTextField.setText(State.alarms[alarmIndex!!].description)
+        hourText.text = State.alarms[alarmIndex!!].hour
+        hourStr = State.alarms[alarmIndex!!].hour
+    }
+
     private fun saveAlarm() {
-        var newAlarm = Alarm(titleTextField.text.toString(), descriptionTextField.text.toString(), "", true)
-        State.addAlarm(newAlarm)
+        if(alarmIndex == -1) {
+            var newAlarm = Alarm(titleTextField.text.toString(), descriptionTextField.text.toString(), hourStr, true)
+            State.addAlarm(newAlarm)
+        }
+        else {
+            State.alarms[alarmIndex!!].title = titleTextField.text.toString()
+            State.alarms[alarmIndex!!].description = descriptionTextField.text.toString()
+            State.alarms[alarmIndex!!].hour = hourStr
+        }
 
         val json = State.toJson()
         val sharedpref = this.getSharedPreferences("State", Context.MODE_PRIVATE)

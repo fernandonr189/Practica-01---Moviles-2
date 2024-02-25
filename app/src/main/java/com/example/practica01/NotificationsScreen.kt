@@ -81,7 +81,7 @@ class NotificationsScreen : AppCompatActivity(), ContextMenuCallback{
         when(menuItem.itemId) {
             R.id.edit_menu_item -> {
                 val intent = Intent(this, EditNotificationScreen::class.java)
-                intent.putExtra("NoteIndex", position)
+                intent.putExtra("AlarmIndex", position)
                 startActivity(intent)
             }
             R.id.delete_menu_item -> {
