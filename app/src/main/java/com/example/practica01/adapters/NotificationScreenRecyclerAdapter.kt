@@ -52,11 +52,13 @@ class NotificationScreenRecyclerAdapter(alarms : MutableList<Alarm>, context : C
         private val alarmTitle = view.findViewById(R.id.item_title) as TextView
         private val alarmDescription = view.findViewById(R.id.item_description) as TextView
         private val isEnabledSwitch = view.findViewById(R.id.switch1) as SwitchMaterial
+        private val hourTextView = view.findViewById(R.id.hour_textview) as TextView
 
         fun bind(alarm : Alarm, context : Context) {
             alarmTitle.text = alarm.title
             alarmDescription.text = alarm.description
             isEnabledSwitch.isChecked = alarm.isActive
+            hourTextView.text = alarm.hour
             isEnabledSwitch.setOnClickListener {
                 alarm.isActive = isEnabledSwitch.isChecked
                 val json = State.toJson()

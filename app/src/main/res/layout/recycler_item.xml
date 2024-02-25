@@ -21,12 +21,12 @@
 
             <TextView
                 android:id="@+id/item_title"
-                android:layout_width="wrap_content"
+                android:layout_width="128dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:textSize="18dp"
-                android:gravity="left"
-                android:text="Alarm Title"
+                android:textSize="22sp"
+                android:gravity="start"
+                android:text="Melatonina"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
                 app:layout_constraintHorizontal_bias="0.068"
@@ -36,18 +36,19 @@
 
             <TextView
                 android:id="@+id/item_description"
-                android:layout_width="wrap_content"
+                android:layout_width="156dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="16dp"
                 android:layout_marginTop="4dp"
-                android:gravity="left"
-                android:text="Alarm description"
+                android:layout_marginBottom="16dp"
+                android:gravity="start"
+                android:text="Pastillas para dormir"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
-                app:layout_constraintHorizontal_bias="0.068"
+                app:layout_constraintHorizontal_bias="0.090"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/item_title" />
+                app:layout_constraintTop_toBottomOf="@id/item_title"
+                app:layout_constraintVertical_bias="1.0" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline"
@@ -66,6 +67,20 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/hour_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10:20"
+                android:layout_marginEnd="8dp"
+                android:textSize="36sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.508" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
