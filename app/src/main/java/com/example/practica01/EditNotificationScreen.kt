@@ -25,15 +25,15 @@ import com.example.practica01.objects.Notifications
 
 class EditNotificationScreen : AppCompatActivity() {
 
-    private lateinit var titleTextField : TextInputEditText
+    private lateinit var titleTextField: TextInputEditText
     private lateinit var descriptionTextField: TextInputEditText
-    private lateinit var selectHourButton : Button
+    private lateinit var selectHourButton: Button
     private lateinit var saveAlarmButton: Button
 
-    private var alarmIndex : Int? = null
+    private var alarmIndex: Int? = null
 
-    private lateinit var hourText : TextView
-    private var hourStr : String = ""
+    private lateinit var hourText: TextView
+    private var hourStr: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.edit_notifications_screen)
@@ -49,17 +49,20 @@ class EditNotificationScreen : AppCompatActivity() {
         saveAlarmButton = findViewById(R.id.save_alarm_button)
         hourText = findViewById(R.id.hour_label)
 
-        if(alarmIndex != -1) {
+        if (alarmIndex != -1) {
             fillForm()
         }
 
         saveAlarmButton.setOnClickListener {
-            if(validateForm()) {
+            if (validateForm()) {
                 saveAlarm()
-                Notifications.showNotification(this, "Alerta guardada", "Haga click aqui para editar")
+                Notifications.showNotification(
+                    this,
+                    "Alerta guardada",
+                    "Haga click aqui para editar"
+                )
                 finish()
-            }
-            else {
+            } else {
                 Toast.makeText(this, "Por favor, complete los datos", Toast.LENGTH_SHORT).show()
             }
         }
@@ -77,11 +80,15 @@ class EditNotificationScreen : AppCompatActivity() {
     }
 
     private fun saveAlarm() {
-        if(alarmIndex == -1) {
-            var newAlarm = Alarm(descriptionTextField.text.toString(), titleTextField.text.toString(), hourStr, true)
+        if (alarmIndex == -1) {
+            var newAlarm = Alarm(
+                descriptionTextField.text.toString(),
+                titleTextField.text.toString(),
+                hourStr,
+                true
+            )
             State.addAlarm(newAlarm)
-        }
-        else {
+        } else {
             State.alarms[alarmIndex!!].title = titleTextField.text.toString()
             State.alarms[alarmIndex!!].description = descriptionTextField.text.toString()
             State.alarms[alarmIndex!!].hour = hourStr
@@ -94,7 +101,8 @@ class EditNotificationScreen : AppCompatActivity() {
             apply()
         }
     }
-    private fun validateForm() : Boolean {
+
+    private fun validateForm(): Boolean {
         return !(titleTextField.text.isNullOrBlank() || descriptionTextField.text.isNullOrBlank() || hourStr == "")
     }
 
@@ -112,10 +120,16 @@ class EditNotificationScreen : AppCompatActivity() {
             val formattedTime = SimpleDateFormat("HH:mm").format(cal.time)
             setHourLabel(formattedTime)
         }
-        TimePickerDialog(this, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true).show()
+        TimePickerDialog(
+            this,
+            timeSetListener,
+            cal.get(Calendar.HOUR_OF_DAY),
+            cal.get(Calendar.MINUTE),
+            true
+        ).show()
     }
 
-    private fun setHourLabel(hour : String){
+    private fun setHourLabel(hour: String) {
         hourStr = hour
         hourText.text = hourStr
     }

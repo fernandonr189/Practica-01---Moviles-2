@@ -8,6 +8,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import com.example.practica01.objects.State
 import com.google.android.material.textfield.TextInputEditText
 
@@ -31,7 +32,12 @@ class MainActivity : AppCompatActivity() {
 
         loginButton.setOnClickListener {
             if(formIsValid()) {
-                doLogin()
+                if(userTextField.text.toString() == "fernando" && passwordTextField.text.toString() == "33656340") {
+                    doLogin()
+                }
+                else {
+                    Toast.makeText(this, "Nombre o contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
