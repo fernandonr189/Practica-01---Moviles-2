@@ -19,7 +19,9 @@ import com.google.android.material.textfield.TextInputEditText
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import com.example.practica01.objects.Notifications
 
 class EditNotificationScreen : AppCompatActivity() {
 
@@ -38,7 +40,6 @@ class EditNotificationScreen : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.alarms_screen_toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        showNotification()
 
         alarmIndex = intent.getIntExtra("AlarmIndex", -1)
 
@@ -55,6 +56,7 @@ class EditNotificationScreen : AppCompatActivity() {
         saveAlarmButton.setOnClickListener {
             if(validateForm()) {
                 saveAlarm()
+                Notifications.showNotification(this, "Alerta guardada", "Haga click aqui para editar")
                 finish()
             }
             else {
@@ -101,9 +103,10 @@ class EditNotificationScreen : AppCompatActivity() {
         return super.onSupportNavigateUp()
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun showTimePicker() {
         val cal = Calendar.getInstance()
-        val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+        val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
             cal.set(Calendar.HOUR_OF_DAY, hour)
             cal.set(Calendar.MINUTE, minute)
             val formattedTime = SimpleDateFormat("HH:mm").format(cal.time)
@@ -115,33 +118,5 @@ class EditNotificationScreen : AppCompatActivity() {
     private fun setHourLabel(hour : String){
         hourStr = hour
         hourText.text = hourStr
-    }
-    private fun showNotification() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create the NotificationChannel.
-            val name = "Notis :)"
-            val descriptionText = "Notis :)"
-            val importance = NotificationManager.IMPORTANCE_LOW
-            val mChannel = NotificationChannel("Notis :)", name, importance)
-            mChannel.description = descriptionText
-            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(mChannel)
-        }
-
-
-        var builder = NotificationCompat.Builder(this, "Notis :)")
-            .setSmallIcon(androidx.core.R.drawable.notification_bg)
-            .setContentTitle("Alarma agregada exitosamente")
-            .setPriority(NotificationCompat.PRIORITY_LOW)
-
-        with(NotificationManagerCompat.from(this)) {
-            if(ActivityCompat.checkSelfPermission(
-                    this@EditNotificationScreen,
-                    Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
-            ) {
-                return@with
-            }
-            notify(1, builder.build())
-        }
     }
 }

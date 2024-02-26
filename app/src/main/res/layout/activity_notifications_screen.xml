@@ -12,21 +12,54 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.95"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:focusable="true" />
+        app:srcCompat="@android:drawable/ic_input_add" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/alarms_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="105dp" />
+
+    <TextView
+        android:id="@+id/notifications_screen_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Agregue los horarios en los que toma sus medicamentos para recibir una notificación"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/no_alarms_set_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:text="No hay notificaciones configuradas"
+        app:layout_constraintBottom_toBottomOf="@+id/alarms_recycler"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/alarms_recycler"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

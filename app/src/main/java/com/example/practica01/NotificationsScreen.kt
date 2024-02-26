@@ -9,12 +9,14 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Adapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.practica01.adapters.NotificationScreenRecyclerAdapter
 import com.example.practica01.models.Alarm
 import com.example.practica01.models.ContextMenuCallback
+import com.example.practica01.objects.Notifications
 import com.example.practica01.objects.State
 
 class NotificationsScreen : AppCompatActivity(), ContextMenuCallback{
@@ -23,13 +25,15 @@ class NotificationsScreen : AppCompatActivity(), ContextMenuCallback{
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerAdapter : NotificationScreenRecyclerAdapter
     private lateinit var alarmList : ArrayList<Alarm>
+    private lateinit var emptyListTextView : TextView
     
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notifications_screen)
         alarmList = State.alarms
-        
+
+        emptyListTextView = findViewById(R.id.no_alarms_set_textview)
         fabButton = findViewById(R.id.floatingActionButton)
         fabButton.setOnClickListener {
             var intent = Intent(this, EditNotificationScreen::class.java)
@@ -40,12 +44,29 @@ class NotificationsScreen : AppCompatActivity(), ContextMenuCallback{
 
         recyclerView.adapter = recyclerAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        if(alarmList.size < 1) {
+            emptyListTextView.visibility = View.VISIBLE
+            recyclerView.visibility = View.INVISIBLE
+        }
+        else {
+            emptyListTextView.visibility = View.INVISIBLE
+            recyclerView.visibility = View.VISIBLE
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
         recyclerAdapter.notifyDataSetChanged()
+        if(alarmList.size < 1) {
+            emptyListTextView.visibility = View.VISIBLE
+            recyclerView.visibility = View.INVISIBLE
+        }
+        else {
+            emptyListTextView.visibility = View.INVISIBLE
+            recyclerView.visibility = View.VISIBLE
+        }
     }
 
     private fun showAlertDialog(position : Int) {
@@ -67,6 +88,7 @@ class NotificationsScreen : AppCompatActivity(), ContextMenuCallback{
     }
 
     private fun deleteAlarm(position: Int) {
+        Notifications.showNotification(this, "Alerta eliminada", "\"" + State.alarms[position].title + "\"" + ": Ha sido eliminada")
         State.alarms.removeAt(position)
         recyclerAdapter.notifyItemRemoved(position)
         val json = State.toJson()
@@ -74,6 +96,14 @@ class NotificationsScreen : AppCompatActivity(), ContextMenuCallback{
         with(sharedpref.edit()) {
             putString("State", json)
             apply()
+        }
+        if(alarmList.size < 1) {
+            emptyListTextView.visibility = View.VISIBLE
+            recyclerView.visibility = View.INVISIBLE
+        }
+        else {
+            emptyListTextView.visibility = View.INVISIBLE
+            recyclerView.visibility = View.VISIBLE
         }
     }
 

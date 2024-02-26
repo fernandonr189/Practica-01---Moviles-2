@@ -1,7 +1,10 @@
 package com.example.practica01
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -35,6 +38,16 @@ class MainActivity : AppCompatActivity() {
         var sharedPref = this.getSharedPreferences("State", Context.MODE_PRIVATE)
         var StateJson = sharedPref.getString("State", State.toJson())
         State.fromJson(StateJson!!)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Notis :)"
+            val descriptionText = "Notis :)"
+            val importance = NotificationManager.IMPORTANCE_LOW
+            val mChannel = NotificationChannel("Notis :)", name, importance)
+            mChannel.description = descriptionText
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(mChannel)
+        }
     }
 
     private fun formIsValid() : Boolean {
