@@ -52,8 +52,8 @@ class EditNotificationScreen : AppCompatActivity() {
         saveAlarmButton.setOnClickListener {
             if (validateForm()) {
                 saveAlarm()
-                //showNotification()
-                scheduleAlarm()
+                showNotification()
+                Notifications.scheduleAlarm(this)
                 finish()
             } else {
                 Toast.makeText(this, "Por favor, complete los datos", Toast.LENGTH_SHORT).show()
@@ -143,13 +143,4 @@ class EditNotificationScreen : AppCompatActivity() {
         hourText.text = hourStr
     }
 
-    fun scheduleAlarm() {
-        val alarmIntent = Intent(this, AlarmReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent,
-            PendingIntent.FLAG_IMMUTABLE)
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = System.currentTimeMillis() + 5000
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
-    }
 }
