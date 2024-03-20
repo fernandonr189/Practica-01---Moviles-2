@@ -1,6 +1,7 @@
 package com.example.practica01.objects
 
 import android.Manifest
+import android.app.AlarmManager
 import android.app.PendingIntent
 import android.app.TaskStackBuilder
 import android.content.pm.PackageManager
@@ -11,6 +12,8 @@ import com.example.practica01.R
 import androidx.core.app.ActivityCompat
 import android.content.Context
 import android.content.Intent
+import androidx.core.content.ContextCompat.getSystemService
+import java.util.Calendar
 
 object Notifications {
     fun showNotification(context: Context, title: String, content: String) {
@@ -55,5 +58,15 @@ object Notifications {
             }
             notify(1, builder.build())
         }
+    }
+
+    fun scheduleAlarm(context: Context) {
+        val alarmIntent = Intent(context, AlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent,
+            PendingIntent.FLAG_IMMUTABLE)
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = System.currentTimeMillis() + 5000
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
     }
 }

@@ -13,7 +13,10 @@ import com.google.android.material.textfield.TextInputEditText
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Intent
+import com.example.practica01.objects.AlarmReceiver
 import com.example.practica01.objects.Notifications
 
 class EditNotificationScreen : AppCompatActivity() {
@@ -49,7 +52,8 @@ class EditNotificationScreen : AppCompatActivity() {
         saveAlarmButton.setOnClickListener {
             if (validateForm()) {
                 saveAlarm()
-                showNotification()
+                //showNotification()
+                scheduleAlarm()
                 finish()
             } else {
                 Toast.makeText(this, "Por favor, complete los datos", Toast.LENGTH_SHORT).show()
@@ -137,5 +141,15 @@ class EditNotificationScreen : AppCompatActivity() {
     private fun setHourLabel(hour: String) {
         hourStr = hour
         hourText.text = hourStr
+    }
+
+    fun scheduleAlarm() {
+        val alarmIntent = Intent(this, AlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent,
+            PendingIntent.FLAG_IMMUTABLE)
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = System.currentTimeMillis() + 5000
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
     }
 }
