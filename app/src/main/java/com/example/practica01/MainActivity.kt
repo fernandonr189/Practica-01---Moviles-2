@@ -46,10 +46,10 @@ class MainActivity : AppCompatActivity() {
         State.fromJson(StateJson!!)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Notis :)"
-            val descriptionText = "Notis :)"
+            val name = "Notificaciones"
+            val descriptionText = "Notificaciones"
             val importance = NotificationManager.IMPORTANCE_LOW
-            val mChannel = NotificationChannel("Notis :)", name, importance)
+            val mChannel = NotificationChannel("Notificaciones", name, importance)
             mChannel.description = descriptionText
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(mChannel)

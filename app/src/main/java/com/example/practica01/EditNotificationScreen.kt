@@ -1,26 +1,19 @@
 package com.example.practica01
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.TimePickerDialog
 import android.content.Context
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import com.example.practica01.models.Alarm
 import com.example.practica01.objects.State
 import com.google.android.material.textfield.TextInputEditText
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
+import android.content.Intent
 import com.example.practica01.objects.Notifications
 
 class EditNotificationScreen : AppCompatActivity() {
@@ -56,11 +49,7 @@ class EditNotificationScreen : AppCompatActivity() {
         saveAlarmButton.setOnClickListener {
             if (validateForm()) {
                 saveAlarm()
-                Notifications.showNotification(
-                    this,
-                    "Alerta guardada",
-                    "Haga click aqui para editar"
-                )
+                showNotification()
                 finish()
             } else {
                 Toast.makeText(this, "Por favor, complete los datos", Toast.LENGTH_SHORT).show()
@@ -70,6 +59,22 @@ class EditNotificationScreen : AppCompatActivity() {
         selectHourButton.setOnClickListener {
             showTimePicker()
         }
+    }
+
+    private fun showNotification() {
+        intent = Intent(this, EditNotificationScreen::class.java)
+        if(alarmIndex != -1) {
+            intent.putExtra("AlarmIndex", alarmIndex)
+        }
+        else {
+            intent.putExtra("AlarmIndex", State.alarms.size - 1)
+        }
+        Notifications.showNotificationWithIntent(
+            this,
+            "Alerta guardada",
+            "Haga click aqui para editar",
+            intent
+        )
     }
 
     private fun fillForm() {
